@@ -1,0 +1,322 @@
+/* Home v3.0 - Namuwiki-style side navigation based on uploaded pc/mobile references */
+#scrollTopBtn{display:none!important;visibility:hidden!important;pointer-events:none!important;}
+.ry-namu-widget{position:fixed;inset:0;z-index:2147483000;pointer-events:none;font-family:inherit;--rn-dot:#575757;--rn-dot-soft:#888;--rn-text:#1f2937;--rn-muted:#64748b;--rn-tip-bg:rgba(255,255,255,.96);--rn-tip-text:#1f2937;--rn-tip-border:rgba(148,163,184,.45);--rn-btn-bg:rgba(255,255,255,.74);--rn-btn-bg-hover:rgba(255,255,255,.96);--rn-btn-border:rgba(148,163,184,.48);--rn-btn-icon:#4b5563;--rn-shadow:0 4px 14px rgba(15,23,42,.18);}
+
+/* PC: dots are not a popup box. They sit directly before the browser scrollbar. */
+.ry-namu-dots{position:fixed;right:12px;top:92px;bottom:42px;width:24px;display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;background:transparent!important;border:0!important;box-shadow:none!important;pointer-events:auto;overflow:visible;z-index:30;}
+.ry-namu-dot{position:relative;width:18px;height:18px;border:0!important;background:transparent!important;padding:0!important;box-shadow:none!important;cursor:pointer!important;border-radius:999px;overflow:visible!important;appearance:none!important;-webkit-appearance:none!important;}
+.ry-namu-dot::before{content:'';position:absolute;left:50%;top:50%;width:5px;height:5px;transform:translate(-50%,-50%);border-radius:999px;background:var(--rn-dot);box-shadow:none;transition:transform .12s ease,background .12s ease,opacity .12s ease;opacity:.82;}
+.ry-namu-dot:hover::before,.ry-namu-dot:focus-visible::before{transform:translate(-50%,-50%) scale(1.18);background:#111827;opacity:1;outline:none;}
+.ry-namu-dot[data-title]:hover::after,.ry-namu-dot[data-title]:focus-visible::after{content:attr(data-title);z-index:2147483647;position:absolute;right:calc(100% + 8px);top:50%;transform:translateY(-50%);white-space:nowrap;max-width:360px;overflow:hidden;text-overflow:ellipsis;padding:5px 8px;border-radius:6px;border:1px solid var(--rn-tip-border);background:var(--rn-tip-bg);color:var(--rn-tip-text);font-size:13px;font-weight:650;box-shadow:0 4px 12px rgba(15,23,42,.14);pointer-events:none;z-index:2147483647;}
+
+/* PC: separated control group, like namuwiki: TOC button + grouped up/down arrows. */
+.ry-namu-controls{position:fixed;right:56px;bottom:48px;top:auto;transform:none;display:flex;flex-direction:column;gap:0;pointer-events:auto;z-index:20;}
+.ry-namu-btn{position:relative;width:43px;height:43px;display:flex;align-items:center;justify-content:center;border:1px solid var(--rn-btn-border)!important;background:var(--rn-btn-bg)!important;color:var(--rn-btn-icon)!important;padding:0!important;cursor:pointer!important;line-height:1!important;box-shadow:var(--rn-shadow)!important;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:background .13s ease,color .13s ease,box-shadow .13s ease,transform .13s ease;appearance:none!important;-webkit-appearance:none!important;}
+.ry-namu-btn svg{width:23px;height:23px;display:block;stroke:currentColor;fill:none;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round;}
+.ry-namu-btn:hover,.ry-namu-btn:focus-visible{background:var(--rn-btn-bg-hover)!important;color:#111827!important;box-shadow:0 6px 18px rgba(15,23,42,.22)!important;outline:none;}
+.ry-namu-btn-toc{border-radius:8px!important;margin-bottom:12px;}
+.ry-namu-controls .ry-namu-btn:not(.ry-namu-btn-toc):nth-of-type(2){border-radius:8px 8px 0 0!important;border-bottom-color:rgba(148,163,184,.22)!important;}
+.ry-namu-controls .ry-namu-btn:not(.ry-namu-btn-toc):nth-of-type(3){border-radius:0 0 8px 8px!important;border-top:0!important;}
+.ry-namu-btn[data-tip]:hover::after,.ry-namu-btn[data-tip]:focus-visible::after{content:attr(data-tip);position:absolute;right:calc(100% + 9px);top:50%;transform:translateY(-50%);white-space:nowrap;padding:6px 9px;border-radius:6px;border:1px solid var(--rn-tip-border);background:var(--rn-tip-bg);color:var(--rn-tip-text);font-size:13px;font-weight:650;box-shadow:0 4px 12px rgba(15,23,42,.14);pointer-events:none;z-index:2147483647;}
+
+/* PC: full list popup is intentionally disabled. Only one hovered dot title appears. */
+.ry-namu-panel{display:none!important;}
+.ry-namu-panel-title{font-weight:950;font-size:20px;color:var(--rn-text);padding:2px 4px 12px;margin-bottom:8px;}
+.ry-namu-list{display:flex;flex-direction:column;gap:3px;}
+.ry-namu-link{width:100%;display:block;text-align:left;border:0!important;background:transparent!important;border-radius:10px!important;padding:8px 9px!important;color:var(--rn-text)!important;font-size:15px!important;font-weight:700!important;line-height:1.35!important;cursor:pointer!important;box-shadow:none!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ry-namu-link:hover,.ry-namu-link:focus-visible{background:rgba(234,179,8,.12)!important;color:#b77900!important;outline:none;}
+.ry-namu-empty{color:var(--rn-muted);font-size:13px;padding:8px 6px;}
+
+html.force-dark .ry-namu-widget{--rn-dot:#8b8b8b;--rn-tip-bg:rgba(31,31,31,.96);--rn-tip-text:#e5e7eb;--rn-tip-border:rgba(255,255,255,.16);--rn-btn-bg:rgba(16,16,16,.68);--rn-btn-bg-hover:rgba(22,22,22,.88);--rn-btn-border:rgba(255,255,255,.16);--rn-btn-icon:#8d8d8d;--rn-shadow:0 4px 18px rgba(0,0,0,.34);}
+html.force-dark .ry-namu-dot:hover::before,html.force-dark .ry-namu-dot:focus-visible::before{background:#d1d5db;}
+html.force-dark .ry-namu-btn:hover,html.force-dark .ry-namu-btn:focus-visible{color:#d1d5db!important;}
+@media (prefers-color-scheme:dark){html:not(.force-light) .ry-namu-widget{--rn-dot:#8b8b8b;--rn-tip-bg:rgba(31,31,31,.96);--rn-tip-text:#e5e7eb;--rn-tip-border:rgba(255,255,255,.16);--rn-btn-bg:rgba(16,16,16,.68);--rn-btn-bg-hover:rgba(22,22,22,.88);--rn-btn-border:rgba(255,255,255,.16);--rn-btn-icon:#8d8d8d;--rn-shadow:0 4px 18px rgba(0,0,0,.34);}html:not(.force-light) .ry-namu-dot:hover::before,html:not(.force-light) .ry-namu-dot:focus-visible::before{background:#d1d5db;}html:not(.force-light) .ry-namu-btn:hover,html:not(.force-light) .ry-namu-btn:focus-visible{color:#d1d5db!important;}}
+
+/* Mobile: no right-side dots. TOC button opens a large side popup. */
+@media (hover:none),(pointer:coarse),(max-width:760px){
+  .ry-namu-widget{inset:auto;right:18px;bottom:calc(92px + env(safe-area-inset-bottom,0px));width:auto;height:auto;pointer-events:none;--rn-mobile-bg:rgba(18,18,18,.42);--rn-mobile-panel-bg:rgba(29,31,33,.96);--rn-mobile-panel-text:#e5e7eb;--rn-mobile-accent:#f0a400;}
+  .ry-namu-dots{display:none!important;}
+  .ry-namu-controls{position:static;right:auto;bottom:auto;transform:none;display:flex;flex-direction:column;gap:0;pointer-events:auto;}
+  .ry-namu-btn{width:47px;height:47px;background:var(--rn-mobile-bg)!important;color:rgba(255,255,255,.52)!important;border-color:rgba(255,255,255,.16)!important;box-shadow:0 6px 20px rgba(0,0,0,.28)!important;border-radius:0!important;}
+  .ry-namu-btn:hover,.ry-namu-btn:focus-visible{background:rgba(18,18,18,.52)!important;color:rgba(255,255,255,.72)!important;transform:none;}
+  .ry-namu-btn svg{width:26px;height:26px;stroke-width:2.4;}
+  .ry-namu-btn-toc{border-radius:10px!important;margin-bottom:14px;}
+  .ry-namu-controls .ry-namu-btn:not(.ry-namu-btn-toc):nth-of-type(2){border-radius:10px 10px 0 0!important;border-bottom-color:rgba(255,255,255,.10)!important;}
+  .ry-namu-controls .ry-namu-btn:not(.ry-namu-btn-toc):nth-of-type(3){border-radius:0 0 10px 10px!important;border-top:0!important;}
+  .ry-namu-btn::after,.ry-namu-dot::after{display:none!important;}
+  .ry-namu-panel{display:none!important;position:absolute;right:calc(100% + 14px);bottom:0;width:min(76vw,320px);max-height:min(72vh,620px);overflow:auto;padding:22px 20px 20px;border:1px solid rgba(255,255,255,.16);border-radius:12px;background:var(--rn-mobile-panel-bg);box-shadow:0 18px 48px rgba(0,0,0,.42);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);pointer-events:auto;color:var(--rn-mobile-panel-text);}
+  .ry-namu-widget.is-open .ry-namu-panel{display:block!important;}
+  .ry-namu-panel-title{font-size:26px;color:var(--rn-mobile-panel-text);font-weight:850;border:0;padding:0 0 16px;margin:0;}
+  .ry-namu-list{gap:4px;}
+  .ry-namu-link{font-size:18px!important;font-weight:650!important;color:var(--rn-mobile-panel-text)!important;padding:8px 10px!important;border-radius:9px!important;white-space:normal;}
+  .ry-namu-link::first-letter{color:var(--rn-mobile-accent);}
+  .ry-namu-link:hover,.ry-namu-link:focus-visible{background:rgba(240,164,0,.12)!important;color:var(--rn-mobile-panel-text)!important;}
+}
+@media (max-width:420px){.ry-namu-widget{right:14px;bottom:calc(90px + env(safe-area-inset-bottom,0px));}.ry-namu-panel{width:min(74vw,300px);padding:20px 18px;}.ry-namu-link{font-size:17px!important;}}
+
+
+/* Home v3.2 - mobile TOC popup redesign from uploaded namuwiki screenshots */
+@media (hover:none),(pointer:coarse),(max-width:760px){
+  .ry-namu-widget{
+    right:22px!important;
+    bottom:calc(110px + env(safe-area-inset-bottom,0px))!important;
+    z-index:2147483400!important;
+    --rn-mobile-panel-bg:rgba(255,255,255,.88);
+    --rn-mobile-panel-text:#22272e;
+    --rn-mobile-panel-border:rgba(203,213,225,.96);
+    --rn-mobile-accent:#0077d9;
+    --rn-mobile-shadow:0 18px 48px rgba(15,23,42,.18);
+  }
+  .ry-namu-panel{
+    display:none!important;
+    position:absolute!important;
+    right:calc(100% + 28px)!important;
+    bottom:-28px!important;
+    width:min(74vw,330px)!important;
+    max-height:min(78vh,680px)!important;
+    overflow:auto!important;
+    padding:30px 26px 28px!important;
+    border:1px solid var(--rn-mobile-panel-border)!important;
+    border-radius:12px!important;
+    background:var(--rn-mobile-panel-bg)!important;
+    color:var(--rn-mobile-panel-text)!important;
+    box-shadow:var(--rn-mobile-shadow)!important;
+    backdrop-filter:blur(18px)!important;
+    -webkit-backdrop-filter:blur(18px)!important;
+  }
+  .ry-namu-widget.is-open .ry-namu-panel{display:block!important;}
+  .ry-namu-panel-title{
+    margin:0 0 18px!important;
+    padding:0!important;
+    color:var(--rn-mobile-panel-text)!important;
+    font-size:26px!important;
+    font-weight:900!important;
+    line-height:1.15!important;
+  }
+  .ry-namu-list{display:flex!important;flex-direction:column!important;gap:2px!important;}
+  .ry-namu-link{
+    width:100%!important;
+    display:block!important;
+    text-align:left!important;
+    background:transparent!important;
+    border:0!important;
+    box-shadow:none!important;
+    color:var(--rn-mobile-panel-text)!important;
+    padding:6px 2px!important;
+    border-radius:7px!important;
+    font-size:21px!important;
+    font-weight:500!important;
+    line-height:1.55!important;
+    white-space:normal!important;
+  }
+  .ry-namu-link-depth1{padding-left:30px!important;}
+  .ry-namu-line{display:flex;gap:8px;align-items:flex-start;}
+  .ry-namu-num{
+    color:var(--rn-mobile-accent)!important;
+    font-weight:500!important;
+    min-width:1.75em;
+    flex:0 0 auto;
+  }
+  .ry-namu-link-depth1 .ry-namu-num{min-width:2.9em;}
+  .ry-namu-title{color:var(--rn-mobile-panel-text)!important;}
+  .ry-namu-link:hover,.ry-namu-link:focus-visible{background:rgba(0,119,217,.06)!important;color:var(--rn-mobile-panel-text)!important;}
+  .ry-namu-link::first-letter{color:inherit!important;}
+  html.force-dark .ry-namu-widget{
+    --rn-mobile-panel-bg:rgba(29,31,33,.96);
+    --rn-mobile-panel-text:#dedede;
+    --rn-mobile-panel-border:rgba(255,255,255,.22);
+    --rn-mobile-accent:#f0a400;
+    --rn-mobile-shadow:0 18px 48px rgba(0,0,0,.48);
+  }
+}
+@media (hover:none) and (prefers-color-scheme:dark),(pointer:coarse) and (prefers-color-scheme:dark),(max-width:760px) and (prefers-color-scheme:dark){
+  html:not(.force-light) .ry-namu-widget{
+    --rn-mobile-panel-bg:rgba(29,31,33,.96);
+    --rn-mobile-panel-text:#dedede;
+    --rn-mobile-panel-border:rgba(255,255,255,.22);
+    --rn-mobile-accent:#f0a400;
+    --rn-mobile-shadow:0 18px 48px rgba(0,0,0,.48);
+  }
+}
+@media (max-width:420px){
+  .ry-namu-panel{width:min(76vw,310px)!important;padding:28px 24px 26px!important;}
+  .ry-namu-link{font-size:20px!important;}
+  .ry-namu-link-depth1{padding-left:26px!important;}
+}
+
+
+/* Home v3.11: mobile floating controls lower + 70% translucent */
+@media (hover:none),(pointer:coarse),(max-width:760px){
+  .ry-namu-widget{
+    right:18px!important;
+    bottom:calc(44px + env(safe-area-inset-bottom,0px))!important;
+  }
+  .ry-namu-controls{opacity:.7!important;}
+  .ry-namu-btn{opacity:1!important;}
+}
+@media (max-width:420px){
+  .ry-namu-widget{right:14px!important;bottom:calc(38px + env(safe-area-inset-bottom,0px))!important;}
+}
+
+
+/* Home v3.12: mobile TOC popup font 70% */
+@media (hover:none),(pointer:coarse),(max-width:760px){
+  .ry-namu-panel-title{font-size:18.2px!important;}
+  .ry-namu-link{font-size:14.7px!important;line-height:1.45!important;}
+  .ry-namu-num{font-size:14.7px!important;}
+  .ry-namu-title{font-size:14.7px!important;}
+}
+@media (max-width:420px){
+  .ry-namu-link,.ry-namu-num,.ry-namu-title{font-size:14px!important;}
+}
+
+/* Home v3.14: hard override - shortcut reference points must be dots only in light/dark/system modes */
+.ry-namu-widget .ry-namu-dots,
+html.force-light .ry-namu-widget .ry-namu-dots,
+html.force-dark .ry-namu-widget .ry-namu-dots{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.ry-namu-widget .ry-namu-dots button.ry-namu-dot,
+.ry-namu-widget .ry-namu-dots button.ry-namu-dot:hover,
+.ry-namu-widget .ry-namu-dots button.ry-namu-dot:focus,
+.ry-namu-widget .ry-namu-dots button.ry-namu-dot:focus-visible,
+.ry-namu-widget .ry-namu-dots button.ry-namu-dot:active,
+html.force-light .ry-namu-widget .ry-namu-dots button.ry-namu-dot,
+html.force-light .ry-namu-widget .ry-namu-dots button.ry-namu-dot:hover,
+html.force-light .ry-namu-widget .ry-namu-dots button.ry-namu-dot:focus,
+html.force-light .ry-namu-widget .ry-namu-dots button.ry-namu-dot:focus-visible,
+html.force-light .ry-namu-widget .ry-namu-dots button.ry-namu-dot:active,
+html.force-dark .ry-namu-widget .ry-namu-dots button.ry-namu-dot,
+html.force-dark .ry-namu-widget .ry-namu-dots button.ry-namu-dot:hover,
+html.force-dark .ry-namu-widget .ry-namu-dots button.ry-namu-dot:focus,
+html.force-dark .ry-namu-widget .ry-namu-dots button.ry-namu-dot:focus-visible,
+html.force-dark .ry-namu-widget .ry-namu-dots button.ry-namu-dot:active{
+  width:18px!important;
+  height:18px!important;
+  min-width:0!important;
+  min-height:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  background-color:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  filter:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  color:transparent!important;
+  appearance:none!important;
+  -webkit-appearance:none!important;
+}
+.ry-namu-widget .ry-namu-dots button.ry-namu-dot::before,
+html.force-light .ry-namu-widget .ry-namu-dots button.ry-namu-dot::before,
+html.force-dark .ry-namu-widget .ry-namu-dots button.ry-namu-dot::before{
+  width:5px!important;
+  height:5px!important;
+  border:0!important;
+  border-radius:999px!important;
+  background:#8b8b8b!important;
+  box-shadow:none!important;
+  outline:0!important;
+  opacity:1!important;
+}
+.ry-namu-widget .ry-namu-dots button.ry-namu-dot:hover::before,
+.ry-namu-widget .ry-namu-dots button.ry-namu-dot:focus-visible::before,
+html.force-light .ry-namu-widget .ry-namu-dots button.ry-namu-dot:hover::before,
+html.force-light .ry-namu-widget .ry-namu-dots button.ry-namu-dot:focus-visible::before,
+html.force-dark .ry-namu-widget .ry-namu-dots button.ry-namu-dot:hover::before,
+html.force-dark .ry-namu-widget .ry-namu-dots button.ry-namu-dot:focus-visible::before{
+  background:#6f6f6f!important;
+  box-shadow:none!important;
+  transform:translate(-50%,-50%) scale(1.15)!important;
+}
+.ry-namu-widget .ry-namu-dots button.ry-namu-dot.is-current::before,
+html.force-light .ry-namu-widget .ry-namu-dots button.ry-namu-dot.is-current::before{
+  width:5px!important;
+  height:5px!important;
+  background:rgba(78, 145, 93, .88)!important;
+  box-shadow:none!important;
+  transform:translate(-50%,-50%)!important;
+  opacity:1!important;
+}
+html.force-dark .ry-namu-widget .ry-namu-dots button.ry-namu-dot.is-current::before{
+  width:5px!important;
+  height:5px!important;
+  background:rgba(119, 181, 214, .88)!important;
+  box-shadow:none!important;
+  transform:translate(-50%,-50%)!important;
+  opacity:1!important;
+}
+@media (prefers-color-scheme:dark){
+  html:not(.force-light) .ry-namu-widget .ry-namu-dots{
+    background:transparent!important;
+    border:0!important;
+    box-shadow:none!important;
+    filter:none!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+  html:not(.force-light) .ry-namu-widget .ry-namu-dots button.ry-namu-dot,
+  html:not(.force-light) .ry-namu-widget .ry-namu-dots button.ry-namu-dot:hover,
+  html:not(.force-light) .ry-namu-widget .ry-namu-dots button.ry-namu-dot:focus,
+  html:not(.force-light) .ry-namu-widget .ry-namu-dots button.ry-namu-dot:focus-visible,
+  html:not(.force-light) .ry-namu-widget .ry-namu-dots button.ry-namu-dot:active{
+    width:18px!important;
+    height:18px!important;
+    min-width:0!important;
+    min-height:0!important;
+    padding:0!important;
+    margin:0!important;
+    border:0!important;
+    outline:0!important;
+    background:transparent!important;
+    background-color:transparent!important;
+    background-image:none!important;
+    box-shadow:none!important;
+    filter:none!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+    color:transparent!important;
+    appearance:none!important;
+    -webkit-appearance:none!important;
+  }
+  html:not(.force-light) .ry-namu-widget .ry-namu-dots button.ry-namu-dot::before{
+    width:5px!important;
+    height:5px!important;
+    background:#8b8b8b!important;
+    box-shadow:none!important;
+    transform:translate(-50%,-50%)!important;
+    opacity:1!important;
+  }
+  html:not(.force-light) .ry-namu-widget .ry-namu-dots button.ry-namu-dot.is-current::before{
+    width:5px!important;
+    height:5px!important;
+    background:rgba(119, 181, 214, .88)!important;
+    box-shadow:none!important;
+    transform:translate(-50%,-50%)!important;
+    opacity:1!important;
+  }
+  html:not(.force-light) .ry-namu-widget .ry-namu-dots button.ry-namu-dot:hover::before,
+  html:not(.force-light) .ry-namu-widget .ry-namu-dots button.ry-namu-dot:focus-visible::before{
+    background:#a0a0a0!important;
+    box-shadow:none!important;
+    transform:translate(-50%,-50%) scale(1.15)!important;
+  }
+}
+
+
+/* Home v3.15: shared divider toggle + muted current-reference colors */
+.mid-divider-toggle{cursor:pointer;user-select:none;}
+.mid-divider-toggle:focus-visible{outline:3px solid rgba(14,165,233,.45);outline-offset:4px;border-radius:999px;}
+.mid-toggle-icon{display:inline-block;margin-left:8px;font-size:13px;opacity:.75;}
+.collapsed-by-divider{display:none!important;}
+.ry-namu-link.is-current{background:rgba(78,145,93,.12)!important;color:#3f7f56!important;font-weight:850!important;}
+html.force-dark .ry-namu-link.is-current{background:rgba(119,181,214,.15)!important;color:#b7dff2!important;}
+@media (prefers-color-scheme:dark){html:not(.force-light) .ry-namu-link.is-current{background:rgba(119,181,214,.15)!important;color:#b7dff2!important;}}

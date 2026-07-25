@@ -1,0 +1,2 @@
+window.RY_SITE_META={creator:'Ryan J.',version: 'v3.13',updated: '2026. 6. 13.',copyright:'© 2026 Ryan J. All rights reserved.'};
+(function(){function apply(){var m=window.RY_SITE_META||{};var t='제작자 '+(m.creator||'Ryan J.')+' · 최종수정 '+(m.updated||'')+' · 버전 '+(m.version||'')+' · '+(m.copyright||'');document.querySelectorAll('[data-site-meta]').forEach(function(el){el.textContent=t;});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply);else apply();})();
