@@ -1245,24 +1245,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
 const bookmarkData = [
   {"type":"divider","title":"일과 휴식"},
-  {"cat":"아이클라우드","links":[["홈","https://www.icloud.com/"],["할일(미리알림)","https://www.icloud.com/reminders/"],["메모·노트","https://www.icloud.com/notes/"],["드라이브","https://www.icloud.com/iclouddrive/"],["문서","https://www.icloud.com/pages/"],["시트","https://www.icloud.com/numbers/"],["발표문서","https://www.icloud.com/keynote/"]]},
-  {"cat":"네이버","links":[["메인","https://www.naver.com/"],["킵저장","https://keep.naver.com/"],["캘린더","https://calendar.naver.com/"],["메모","https://memo.naver.com/"],["사전","https://dict.naver.com/"],["지도","https://map.naver.com/"],["마이박스","https://mybox.naver.com/"],["메일","https://mail.naver.com/"]]},
-  {"cat":"포털·검색","links":[["갓피플","https://cnts.godpeople.com/"],["다음","https://www.daum.net/"],["사전","https://dic.daum.net/index.do"],["카카오맵","https://map.kakao.com/"],["에이닷","https://adot.ai/search/"]]},
-  {"cat":"구글","links":[["메인","https://www.google.com/?hl=ko"],["북스","https://play.google.com/books"],["제미나이","https://gemini.google.com/"],["노트북","https://notebooklm.google.com/?utm_source=app_launcher&utm_medium=referral&authuser=0"],["킵메모","https://keep.google.com/"],["드라이브","https://drive.google.com/"],["저장됨","https://www.google.com/save?authuser=0"],["유튜브","https://www.youtube.com/"]]},
-  {"cat":"공개·배포","links":[["블로그","https://blog.naver.com/lovegreentree"],["Github","https://github.com/ryan-developer827"],["Netlify","https://app.netlify.com/teams/jr827"],["Porkbun(도메인)","https://porkbun.com/"]]},
-  {"cat":"미디어","links":[["Spotify","https://open.spotify.com/"],["유튜브My목록","https://youtube.com/playlist?list=PLQ0MDzVnOm_E&si=ARhI8gDCM1MLb84J"],["유튜브SY채널","https://www.youtube.com/channel/UCGd1lMxq6Moap4DZ6ERDktg"],["제니퍼전채널","https://www.youtube.com/@jenniferjessica.violin"],["홀리노트채널","https://www.youtube.com/@HOLYNOTE_333"]]},
-  {"cat":"음악","links":[
-["Beautiful Savior","https://www.youtube.com/watch?v=igoK7BWPWow&list=PLpWy90T8gfLjoc69XY6gDPYn7R7OonOYE&index=3"]
-,["주님을 보게 하소서","https://www.youtube.com/watch?v=mp4hOv2vJ6g&list=PLpWy90T8gfLjoc69XY6gDPYn7R7OonOYE"]
-,["두려움의 멍에 벗네","https://www.youtube.com/watch?v=sweWVWja8TY&list=PLpWy90T8gfLjoc69XY6gDPYn7R7OonOYE&index=2"]
-,["주만 바라볼찌라","https://www.youtube.com/watch?v=1D0sUWOZiPQ&list=PLpWy90T8gfLjoc69XY6gDPYn7R7OonOYE&index=4"]
-,["은혜찬양모음#4(4곡/1H)","https://www.youtube.com/watch?v=qdzB3m7CRgk&list=PLpWy90T8gfLjoc69XY6gDPYn7R7OonOYE&index=5"]
-,["회복과 감사의 찬송가10곡","https://www.youtube.com/watch?v=OOg0_7qXHIQ&list=PLBzopr010e3o&index=1&t=1s"]
-,["아침에-생기-클래식 찬양 Vol.2","https://www.youtube.com/watch?v=4j-oZjzINKk&list=PLBzopr010e3o&index=2"]]},
+  {"cat":"아이클라우드","links":[["홈","https://www.icloud.com/"]
+                           ,["할일(미리알림)","https://www.icloud.com/reminders/"]
+                           ,["메모·노트","https://www.icloud.com/notes/"]
+                           ,["드라이브","https://www.icloud.com/iclouddrive/"]
+                           ,["문서","https://www.icloud.com/pages/"]
+                           ,["시트","https://www.icloud.com/numbers/"]
+                           ,["발표문서","https://www.icloud.com/keynote/"]]},
+  {"cat":"네이버","links":[["메인","https://www.naver.com/"]
+                        ,["킵저장","https://keep.naver.com/"]
+                        ,["캘린더","https://calendar.naver.com/"]
+                        ,["메모","https://memo.naver.com/"]
+                        ,["사전","https://dict.naver.com/"]
+                        ,["지도","https://map.naver.com/"]
+                        ,["마이박스","https://mybox.naver.com/"]
+                        ,["메일","https://mail.naver.com/"]]},
+  {"cat":"포털·검색","links":[["갓피플","https://cnts.godpeople.com/"]
+                          ,["다음","https://www.daum.net/"]
+                          ,["사전","https://dic.daum.net/index.do"]
+                          ,["카카오맵","https://map.kakao.com/"]
+                          ,["에이닷","https://adot.ai/search/"]]},
+  {"cat":"구글","links":[["메인","https://www.google.com/?hl=ko"]
+                       ,["북스","https://play.google.com/books"]
+                       ,["제미나이","https://gemini.google.com/"]
+                       ,["노트북","https://notebooklm.google.com/?utm_source=app_launcher&utm_medium=referral&authuser=0"]
+                       ,["킵메모","https://keep.google.com/"],["드라이브","https://drive.google.com/"]
+                       ,["저장됨","https://www.google.com/save?authuser=0"]
+                       ,["유튜브","https://www.youtube.com/"]
+                       ,["유튜브뮤직","https://music.youtube.com/"]]},
+  {"cat":"공개·배포","links":[["블로그","https://blog.naver.com/lovegreentree"]
+                          ,["Github","https://github.com/ryan-developer827"]
+                          ,["Netlify","https://app.netlify.com/teams/jr827"]
+                          ,["Porkbun(도메인)","https://porkbun.com/"]]},
+  {"cat":"미디어","links":[["Spotify","https://open.spotify.com/"]
+                        ,["넷플릭스","https://www.netflix.com/"]
+                        ,["쿠팡플레이","https://www.coupangplay.com/home"]
+                        ,["유튜브라이언","https://youtube.com/playlist?list=PLQ0MDzVnOm_E&si=ARhI8gDCM1MLb84J"]
+                        ,["유튜브SY","https://www.youtube.com/channel/UCGd1lMxq6Moap4DZ6ERDktg"]
+                        ,["제니퍼전","https://www.youtube.com/@jenniferjessica.violin"],
+                        ["홀리노트채널","https://www.youtube.com/@HOLYNOTE_333"]]},
+  {"cat":"음악","links":[["Beautiful Savior","https://www.youtube.com/watch?v=igoK7BWPWow&list=PLpWy90T8gfLjoc69XY6gDPYn7R7OonOYE&index=3"]
+                       ,["주님을 보게 하소서","https://www.youtube.com/watch?v=mp4hOv2vJ6g&list=PLpWy90T8gfLjoc69XY6gDPYn7R7OonOYE"]
+                       ,["두려움의 멍에 벗네","https://www.youtube.com/watch?v=sweWVWja8TY&list=PLpWy90T8gfLjoc69XY6gDPYn7R7OonOYE&index=2"]
+                       ,["주만 바라볼찌라","https://www.youtube.com/watch?v=1D0sUWOZiPQ&list=PLpWy90T8gfLjoc69XY6gDPYn7R7OonOYE&index=4"]
+                       ,["은혜찬양모음#4(4곡/1H)","https://www.youtube.com/watch?v=qdzB3m7CRgk&list=PLpWy90T8gfLjoc69XY6gDPYn7R7OonOYE&index=5"]
+                       ,["회복과 감사의 찬송가10곡","https://www.youtube.com/watch?v=OOg0_7qXHIQ&list=PLBzopr010e3o&index=1&t=1s"]
+                       ,["아침에-생기-클래식 찬양 Vol.2","https://www.youtube.com/watch?v=4j-oZjzINKk&list=PLBzopr010e3o&index=2"]]},
   
 {"type":"divider","title":"회원(기본:네이버SNS로그인)"},
   {"cat":"도서·학술·교육","links":[["교보문고","https://www.kyobobook.co.kr/"],["KISS","https://kiss.kstudy.com/"],["한국장학재단","https://www.kosaf.go.kr/ko/main.do"],["고려신학대학원","https://www.kts.ac.kr/"],["인터넷증명발급","https://www.certpia.com/"]]},
-  {"cat":"쇼핑·외식·포인트","links":[["신세계","https://www.ssg.com/"],["롯데백화점","https://www.lotteshopping.com/"],["롯데ON","https://www.lotteon.com/"],["HPoint","https://www.h-point.co.kr/"],["L.POINT","https://www.lpoint.com/"],["배달의민족","https://www.baemin.com/"],["Dominos","https://web.dominos.co.kr/"]]},
+  {"cat":"쇼핑·외식·포인트","links":[["쿠팡(네X)","https://www.coupang.com/"],["신세계","https://www.ssg.com/"],["롯데백화점","https://www.lotteshopping.com/"],["롯데ON","https://www.lotteon.com/"],["HPoint","https://www.h-point.co.kr/"],["L.POINT","https://www.lpoint.com/"],["배달의민족","https://www.baemin.com/"],["Dominos","https://web.dominos.co.kr/"]]},
   {"cat":"문화·상품권·예매","links":[["놀","https://nol.yanolja.com/"],["롯데시네마","https://www.lottecinema.co.kr/"],["CGV","https://cgv.co.kr/"],["컬쳐문화상품권","https://www.culturegift.co.kr/"],["온누리상품권","https://www.onnuri-mall.co.kr/custom/onnuriDigitalVC"]]},
   {"cat":"항공사·공항·해운사","links":[["대한항공","https://www.koreanair.com/"],["에어부산","https://www.airbusan.com/"],["진에어","https://www.jinair.com/"],["인천국제공항공사","https://www.airport.kr/sites/ap_ko/index.do"]]},
   {"cat":"호텔","links":[["파라다이스부산(네X)","https://www.busanparadisehotel.co.kr/front?language=KO"],["신라호텔","https://www.shillahotels.com/"],["롯데호텔","https://www.lottehotel.com/"]]},
